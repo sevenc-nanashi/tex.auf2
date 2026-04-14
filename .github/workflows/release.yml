@@ -64,4 +64,5 @@ jobs:
           body: |
             `sevenc-nanashi.tex-auf2-v${{ github.event.inputs.version }}.au2pkg.zip`をダウンロードし、AviUtl2のプレビューにドラッグ&ドロップしてください。
           files: |
+            ./release/catalog.json
             ./release/sevenc-nanashi.tex-auf2-v*.au2pkg.zip
