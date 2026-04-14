@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::hash::{Hash, Hasher};
 
 use aviutl2::{
@@ -213,9 +214,21 @@ fn render_tex(key: &TexCacheKey) -> anyhow::Result<TexCacheEntry> {
     )
     .context("Failed to create pixmap")?;
     resvg::render(&tree, Default::default(), &mut pixmap.as_mut());
+    let mut buffer = pixmap.data().to_vec();
+    buffer.par_chunks_exact_mut(4).for_each(|pixel| {
+        // PMA to Straight alpha
+        //
+        // r / (a / 255) = r * 255 / a
+        if pixel[3] == 0 {
+            return;
+        }
+        pixel[0] = ((pixel[0] as u16 * 255) / (pixel[3] as u16)) as u8;
+        pixel[1] = ((pixel[1] as u16 * 255) / (pixel[3] as u16)) as u8;
+        pixel[2] = ((pixel[2] as u16 * 255) / (pixel[3] as u16)) as u8;
+    });
 
     Ok(TexCacheEntry {
-        buffer: pixmap.data().to_vec(),
+        buffer,
         width: pixmap.width(),
         height: pixmap.height(),
     })
