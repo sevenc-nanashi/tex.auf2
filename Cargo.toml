@@ -10,5 +10,5 @@ crate-type = ["cdylib"]
 aviutl2 = "0.23.0"
 dashmap = "6.1.0"
 educe = "0.6.0"
-mathjax-svg-rs = "0.3.1"
+mathjax-svg-rs = "0.4.0"
 resvg = "0.47.0"

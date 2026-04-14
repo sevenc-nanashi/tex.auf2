@@ -956,9 +956,9 @@ dependencies = [
 
 [[package]]
 name = "mathjax-svg-rs"
-version = "0.3.1"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "616cc2022bd44fea662b7cebc9ee2f4a475885c69b7d63aaf3d072b71878d6d1"
+checksum = "2b2c39f596739e90fe29a19551185250b30ff074cda25982d670205bad012ee2"
 dependencies = [
  "boa_engine",
  "include-zstd",

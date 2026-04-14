@@ -42,12 +42,14 @@ impl aviutl2::generic::GenericPlugin for TexAuf2 {
 struct TexCacheKey {
     tex: String,
     font_size: f32,
+    align: Align,
     color: u32,
 }
 impl std::hash::Hash for TexCacheKey {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.tex.hash(state);
         self.font_size.to_bits().hash(state);
+        self.align.hash(state);
         self.color.hash(state);
     }
 }
@@ -73,12 +75,25 @@ static FONT_DB: std::sync::LazyLock<std::sync::Arc<resvg::usvg::fontdb::Database
 #[aviutl2::plugin(FilterPlugin)]
 struct TexFilter {}
 
+#[derive(Debug, Default, Clone, PartialEq, Eq, Hash, aviutl2::filter::FilterConfigSelectItems)]
+enum Align {
+    #[item(name = "左")]
+    Left,
+    #[default]
+    #[item(name = "中央")]
+    Center,
+    #[item(name = "右")]
+    Right,
+}
+
 #[aviutl2::filter::filter_config_items]
 struct TexConfig {
     #[track(name = "サイズ", step = 0.01, default = 100.0, range = 1..=1000.0)]
     font_size: f32,
     #[color(name = "色", default = 0xffffff)]
     color: u32,
+    #[select(name = "配置", items = Align, default = Align::Center)]
+    align: Align,
     #[text(name = "TeX")]
     tex: String,
 
@@ -129,6 +144,7 @@ impl aviutl2::filter::FilterPlugin for TexFilter {
         let cache_key = TexCacheKey {
             tex: config.tex.clone(),
             font_size: config.font_size,
+            align: config.align.clone(),
             color: config.color,
         };
         let cache_key_hash = {
@@ -176,8 +192,18 @@ fn render_tex(key: &TexCacheKey) -> anyhow::Result<TexCacheEntry> {
     };
 
     tracing::debug!("Rendering TeX: {:?}", key.tex);
-    let svg = mathjax_svg_rs::render_tex_with_font_size(&key.tex, key.font_size as f64)
-        .map_err(|e| anyhow::anyhow!("Failed to render TeX: {e}"))?;
+    let svg = mathjax_svg_rs::render_tex(
+        &key.tex,
+        &mathjax_svg_rs::Options {
+            font_size: key.font_size as f64,
+            horizontal_align: match key.align {
+                Align::Left => mathjax_svg_rs::HorizontalAlign::Left,
+                Align::Center => mathjax_svg_rs::HorizontalAlign::Center,
+                Align::Right => mathjax_svg_rs::HorizontalAlign::Right,
+            },
+        },
+    )
+    .map_err(|e| anyhow::anyhow!("Failed to render TeX: {e}"))?;
     tracing::debug!("Generated SVG: {} bytes", svg.len());
     let tree = Tree::from_str(&svg, &options).context("Failed to parse TeX as SVG")?;
     let pixmap_size = tree.size();
