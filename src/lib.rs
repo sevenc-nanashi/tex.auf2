@@ -43,14 +43,12 @@ impl aviutl2::generic::GenericPlugin for TexAuf2 {
 struct TexCacheKey {
     tex: String,
     font_size: f32,
-    align: Align,
     color: u32,
 }
 impl std::hash::Hash for TexCacheKey {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.tex.hash(state);
         self.font_size.to_bits().hash(state);
-        self.align.hash(state);
         self.color.hash(state);
     }
 }
@@ -93,8 +91,6 @@ struct TexConfig {
     font_size: f32,
     #[color(name = "色", default = 0xffffff)]
     color: u32,
-    #[select(name = "配置", items = Align, default = Align::Center)]
-    align: Align,
     #[text(name = "TeX")]
     tex: String,
 
@@ -185,28 +181,37 @@ impl aviutl2::filter::FilterPlugin for TexFilter {
 fn render_tex(key: &TexCacheKey) -> anyhow::Result<TexCacheEntry> {
     use resvg::usvg::{Options, Tree};
 
-    let options = Options {
+    tracing::debug!("Rendering TeX: {:?}", key.tex);
+    let parsed = ratex_parser::Parser::new(&key.tex)
+        .parse()
+        .context("Failed to parse TeX")?;
+    let r = ((key.color >> 16) & 0xff) as u8;
+    let g = ((key.color >> 8) & 0xff) as u8;
+    let b = (key.color & 0xff) as u8;
+    let ratex_options = ratex_layout::LayoutOptions {
+        style: ratex_types::math_style::MathStyle::Display,
+        color: ratex_types::color::Color::rgb(r as f32 / 255.0, g as f32 / 255.0, b as f32 / 255.0),
+        ..Default::default()
+    };
+    let layout = ratex_layout::layout(&parsed, &ratex_options);
+    let display_list = ratex_layout::to_display_list(&layout);
+    let svg_options = ratex_svg::SvgOptions {
+        font_size: key.font_size as _,
+        embed_glyphs: true,
+
+        ..Default::default()
+    };
+    let svg = ratex_svg::render_to_svg(&display_list, &svg_options);
+    tracing::debug!("Generated SVG: {} bytes", svg.len());
+
+    let svg_options = Options {
         fontdb: FONT_DB.clone(),
         font_size: key.font_size,
         style_sheet: Some(format!("svg {{ color: #{:06x}; }}", key.color)),
         ..Default::default()
     };
 
-    tracing::debug!("Rendering TeX: {:?}", key.tex);
-    let svg = mathjax_svg_rs::render_tex(
-        &key.tex,
-        &mathjax_svg_rs::Options {
-            font_size: key.font_size as f64,
-            horizontal_align: match key.align {
-                Align::Left => mathjax_svg_rs::HorizontalAlign::Left,
-                Align::Center => mathjax_svg_rs::HorizontalAlign::Center,
-                Align::Right => mathjax_svg_rs::HorizontalAlign::Right,
-            },
-        },
-    )
-    .map_err(|e| anyhow::anyhow!("Failed to render TeX: {e}"))?;
-    tracing::debug!("Generated SVG: {} bytes", svg.len());
-    let tree = Tree::from_str(&svg, &options).context("Failed to parse TeX as SVG")?;
+    let tree = Tree::from_str(&svg, &svg_options).context("Failed to parse TeX as SVG")?;
     let pixmap_size = tree.size();
     let mut pixmap = resvg::tiny_skia::Pixmap::new(
         (pixmap_size.width()).ceil() as u32,
