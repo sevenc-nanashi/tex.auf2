@@ -43,12 +43,14 @@ impl aviutl2::generic::GenericPlugin for TexAuf2 {
 struct TexCacheKey {
     tex: String,
     font_size: f32,
+    inline: bool,
     color: u32,
 }
 impl std::hash::Hash for TexCacheKey {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         self.tex.hash(state);
         self.font_size.to_bits().hash(state);
+        self.inline.hash(state);
         self.color.hash(state);
     }
 }
@@ -74,23 +76,14 @@ static FONT_DB: std::sync::LazyLock<std::sync::Arc<resvg::usvg::fontdb::Database
 #[aviutl2::plugin(FilterPlugin)]
 struct TexFilter {}
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Hash, aviutl2::filter::FilterConfigSelectItems)]
-enum Align {
-    #[item(name = "左")]
-    Left,
-    #[default]
-    #[item(name = "中央")]
-    Center,
-    #[item(name = "右")]
-    Right,
-}
-
 #[aviutl2::filter::filter_config_items]
 struct TexConfig {
     #[track(name = "サイズ", step = 0.01, default = 100.0, range = 1..=1000.0)]
     font_size: f32,
     #[color(name = "色", default = 0xffffff)]
     color: u32,
+    #[check(name = "インライン", default = false)]
+    inline: bool,
     #[text(name = "TeX")]
     tex: String,
 
@@ -141,7 +134,7 @@ impl aviutl2::filter::FilterPlugin for TexFilter {
         let cache_key = TexCacheKey {
             tex: config.tex.clone(),
             font_size: config.font_size,
-            align: config.align.clone(),
+            inline: config.inline,
             color: config.color,
         };
         let cache_key_hash = {
@@ -189,7 +182,11 @@ fn render_tex(key: &TexCacheKey) -> anyhow::Result<TexCacheEntry> {
     let g = ((key.color >> 8) & 0xff) as u8;
     let b = (key.color & 0xff) as u8;
     let ratex_options = ratex_layout::LayoutOptions {
-        style: ratex_types::math_style::MathStyle::Display,
+        style: if key.inline {
+            ratex_types::math_style::MathStyle::Text
+        } else {
+            ratex_types::math_style::MathStyle::Display
+        },
         color: ratex_types::color::Color::rgb(r as f32 / 255.0, g as f32 / 255.0, b as f32 / 255.0),
         ..Default::default()
     };
