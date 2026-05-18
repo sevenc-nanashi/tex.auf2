@@ -32,11 +32,6 @@ impl aviutl2::generic::GenericPlugin for TexAuf2 {
     fn register(&mut self, registry: &mut aviutl2::generic::HostAppHandle) {
         registry.register_filter_plugin(&self.filter);
     }
-
-    fn on_clear_cache(&mut self, _edit_section: &aviutl2::generic::EditSection) {
-        tracing::info!("Clearing render cache");
-        RENDER_CACHES.clear();
-    }
 }
 
 #[derive(Clone, Default, PartialEq)]
@@ -62,9 +57,6 @@ struct TexCacheEntry {
     width: u32,
     height: u32,
 }
-
-static RENDER_CACHES: std::sync::LazyLock<dashmap::DashMap<u64, TexCacheEntry>> =
-    std::sync::LazyLock::new(dashmap::DashMap::new);
 
 static FONT_DB: std::sync::LazyLock<std::sync::Arc<resvg::usvg::fontdb::Database>> =
     std::sync::LazyLock::new(|| {
@@ -114,7 +106,7 @@ impl aviutl2::filter::FilterPlugin for TexFilter {
             label: None,
             flags: aviutl2::bitflag!(aviutl2::filter::FilterPluginFlags {
                 video: true,
-                as_object: true
+                input: true
             }),
             information: format!(
                 "Render TeX as filter objects / v{} / https://github.com/sevenc-nanashi/tex.auf2",
@@ -143,26 +135,43 @@ impl aviutl2::filter::FilterPlugin for TexFilter {
             hasher.finish()
         };
         if config.use_cache {
-            let cache_entry = RENDER_CACHES
-                .entry(cache_key_hash)
-                .or_try_insert_with(|| {
-                    tracing::info!("Cache miss for key {cache_key_hash}, rendering TeX");
-                    let svg_data = render_tex(&cache_key).context("Failed to render TeX")?;
-                    tracing::info!(
-                        "Rendered TeX: {} bytes, dimensions: {}x{}",
-                        svg_data.buffer.len(),
-                        svg_data.width,
-                        svg_data.height
-                    );
-                    anyhow::Ok(TexCacheEntry {
-                        buffer: svg_data.buffer,
-                        width: svg_data.width,
-                        height: svg_data.height,
-                    })
-                })
-                .map_err(|e| anyhow::anyhow!("Failed to acquire cache entry: {e:?}"))?;
+            let cache_entry = aviutl2::cache::get_image_cache(
+                &aviutl2::cache::GLOBAL_CACHE_HANDLE,
+                &cache_key_hash.to_string(),
+            )?;
+            if let Some(cache_entry) = cache_entry {
+                video.set_image_data(
+                    cache_entry.as_u8_slice(),
+                    cache_entry.width() as _,
+                    cache_entry.height() as _,
+                );
+                return Ok(());
+            }
 
-            video.set_image_data(&cache_entry.buffer, cache_entry.width, cache_entry.height);
+            tracing::info!("Cache miss for key {cache_key_hash}, rendering TeX");
+            let svg_data = render_tex(&cache_key).context("Failed to render TeX")?;
+            tracing::info!(
+                "Rendered TeX: {} bytes, dimensions: {}x{}",
+                svg_data.buffer.len(),
+                svg_data.width,
+                svg_data.height
+            );
+            let entry = TexCacheEntry {
+                buffer: svg_data.buffer,
+                width: svg_data.width,
+                height: svg_data.height,
+            };
+
+            let mut new_cache_entry = aviutl2::cache::create_image_cache(
+                &aviutl2::cache::GLOBAL_CACHE_HANDLE,
+                &cache_key_hash.to_string(),
+                entry.width as _,
+                entry.height as _,
+            )?;
+            new_cache_entry
+                .as_u8_slice_mut()
+                .copy_from_slice(&entry.buffer);
+            video.set_image_data(new_cache_entry.as_u8_slice(), entry.width, entry.height);
         } else {
             let cache_entry = render_tex(&cache_key).context("Failed to render TeX")?;
             video.set_image_data(&cache_entry.buffer, cache_entry.width, cache_entry.height);
