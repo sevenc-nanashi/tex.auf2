@@ -53,15 +53,15 @@ checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
 name = "autocfg"
-version = "1.5.0"
+version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
+checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
 
 [[package]]
 name = "aviutl2"
-version = "0.29.0"
+version = "0.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f412ebb650b660b095fbb07f9eab63107a12155fc1e07f7c33cca80119e76a0"
+checksum = "af6fd27e36d06bc65f6d366c676fdfdece96bd64704e8e72509061d8cf9fefd1"
 dependencies = [
  "anyhow",
  "aviutl2-alias",
@@ -87,9 +87,9 @@ dependencies = [
 
 [[package]]
 name = "aviutl2-alias"
-version = "0.29.0"
+version = "0.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2b56cfdc44c5b55513ef0df853f0011702f5ba7084345bcecaf177ac37b3f53"
+checksum = "f57eb10d59420be5c57bb47d0a262d48b92176d01dd6e3feffbcb58accf86644"
 dependencies = [
  "duplicate",
  "indexmap",
@@ -98,9 +98,9 @@ dependencies = [
 
 [[package]]
 name = "aviutl2-macros"
-version = "0.29.0"
+version = "0.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a0ca2ea5973acfc083fc34b9ba21c201ed4909d8edb42c5d90ca05c030f9b914"
+checksum = "77c8509a77efb56bde4144a711c19e7da39352ff1081cb206d1172f4c56f6ee9"
 dependencies = [
  "decimal-rs",
  "either",
@@ -113,9 +113,9 @@ dependencies = [
 
 [[package]]
 name = "aviutl2-sys"
-version = "0.29.0"
+version = "0.33.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "910fcf9df1fc5ca028641f8e19c699dbd8eb82e9f64fbcc103fe6356d0e7f4e4"
+checksum = "b863bb9da0dd082b191d0c2c1482689324741fac289b702dc0554af2e3ec1574"
 dependencies = [
  "windows-sys",
 ]
@@ -143,9 +143,9 @@ checksum = "5e764a1d40d510daf35e07be9eb06e75770908c27d411ee6c92109c9840eaaf7"
 
 [[package]]
 name = "bitflags"
-version = "2.11.1"
+version = "2.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3"
+checksum = "b4388bee8683e3d04af747c73422af53102d2bd24d9eadb6cbc100baef4b43f8"
 
 [[package]]
 name = "block-buffer"
@@ -323,9 +323,9 @@ dependencies = [
 
 [[package]]
 name = "either"
-version = "1.15.0"
+version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
+checksum = "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e"
 
 [[package]]
 name = "enum-ordinalize"
@@ -561,9 +561,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.29"
+version = "0.4.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897"
+checksum = "953f07c43838f8e6f9758cab68bf5bed85465e7587ebe0b823f1bcd81978ad3a"
 
 [[package]]
 name = "matchers"
@@ -576,9 +576,9 @@ dependencies = [
 
 [[package]]
 name = "memchr"
-version = "2.8.0"
+version = "2.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
+checksum = "88904434abc2901f197fe8cc55f0445e7ded921dba5911dad2e2b39b48e663c4"
 
 [[package]]
 name = "memmap2"
@@ -687,9 +687,9 @@ dependencies = [
 
 [[package]]
 name = "pastey"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5a797f0e07bdf071d15742978fc3128ec6c22891c31a3a931513263904c982a"
+checksum = "2ee67f1008b1ba2321834326597b8e186293b049a023cdef258527550b9935b4"
 
 [[package]]
 name = "phf"
@@ -821,9 +821,9 @@ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 
 [[package]]
 name = "ratex-font"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "afbff82873da9cb006b75910c4978ccf5a0e42b95e92b45f0361751e83134eb3"
+checksum = "076f9ca8409eed1b0d9de1c666cf231665e0b6d1691b8c28e27c2bdd55f4c8b1"
 dependencies = [
  "phf",
  "ratex-types",
@@ -831,9 +831,9 @@ dependencies = [
 
 [[package]]
 name = "ratex-font-loader"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "288ab95dd208f89b48e40dde73ad49f220e09fce1bb1ba7fb94b9b9da1c3638d"
+checksum = "333f58d51a30e9a5dedc503bffb1e1592e80a7e754dd6b7024ad7b26766f73b8"
 dependencies = [
  "ab_glyph",
  "ratex-font",
@@ -844,18 +844,18 @@ dependencies = [
 
 [[package]]
 name = "ratex-katex-fonts"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "356dda9769af6a785e9ba8fe2ffa89fd22b047cec5f4e26767a5e29548108ac6"
+checksum = "8b451364ad69b55587baa549522244aaeabb0dc26d84f12a37987e9f1c59342b"
 dependencies = [
  "rust-embed",
 ]
 
 [[package]]
 name = "ratex-layout"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13a343bc5b02d64d5569dd71c388386f140f7caef2aa17f1d90af40db8194249"
+checksum = "f4253612c4cd7f28e40fcd4a3b8f35570b77c74717946796550dc873e086a6cd"
 dependencies = [
  "ratex-font",
  "ratex-parser",
@@ -865,9 +865,9 @@ dependencies = [
 
 [[package]]
 name = "ratex-lexer"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34501a6076195853f6888a4b725b2fa4e6c58708f817ad22d48b70fd6ad47354"
+checksum = "8b0cc7746f4a617f857390f5361cb413d79d9cc0f607b05d398ddef0b8b21522"
 dependencies = [
  "ratex-types",
  "serde",
@@ -876,9 +876,9 @@ dependencies = [
 
 [[package]]
 name = "ratex-parser"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e9c6108fa2f093a2f71f4212d698796777ed86e8a10dd00d23712944fa6e403"
+checksum = "a1d1c51aaae3f99f6f61e3d76d820b01afb3a0c19cf092ed11fedef7604930cd"
 dependencies = [
  "fancy-regex",
  "ratex-font",
@@ -894,9 +894,9 @@ dependencies = [
 
 [[package]]
 name = "ratex-svg"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f532f3ee134b400b8d98d4583254aa412fdac5315ce049bc2e85317751cd47d9"
+checksum = "4d8de42ad88f7d5f50dbe4f0d0d431051398fb09725920568ef75553a4a80ae6"
 dependencies = [
  "ab_glyph",
  "base64",
@@ -909,18 +909,18 @@ dependencies = [
 
 [[package]]
 name = "ratex-types"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ff31d1010354f0e22ade3ded5bb108d28a7239d0fee8e187a045a89100590c2"
+checksum = "694d45327eb6f5bf76d5d06f5dc1123a1d1202e3d392f2b260bd12bcca0dc19d"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "ratex-unicode-font"
-version = "0.1.9"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8cb232cd00aefdee9a8e3368927d82eab9d458af2538353f4b44124800bee629"
+checksum = "692e6fb9ce62d33edc6f6beb6fe4ebaf1f61f8fc4297552573e74750c4472f86"
 dependencies = [
  "fontdb",
  "system-fonts",
@@ -964,9 +964,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.12.3"
+version = "1.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e10754a14b9137dd7b1e3e5b0493cc9171fdd105e0ab477f51b72e7f3ac0e276"
+checksum = "f1292b7759ae1cb9ec195452d1390a074f0cd8541ab7a5a8c31cd6db45d4a6ba"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -993,9 +993,9 @@ checksum = "cab834c73d247e67f4fae452806d17d3c7501756d98c8808d7c9c7aa7d18f973"
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.10"
+version = "0.8.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
+checksum = "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
 
 [[package]]
 name = "resvg"
@@ -1137,9 +1137,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.149"
+version = "1.0.150"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83fc039473c5595ace860d8c4fafa220ff474b3fc6bfdb4293327f1a37e94d86"
+checksum = "e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9"
 dependencies = [
  "itoa",
  "memchr",
@@ -1185,9 +1185,9 @@ dependencies = [
 
 [[package]]
 name = "siphasher"
-version = "1.0.2"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2aa850e253778c88a04c3d7323b043aeda9d3e30d5971937c1855769763678e"
+checksum = "8ee5873ec9cce0195efcb7a4e9507a04cd49aec9c83d0389df45b1ef7ba2e649"
 
 [[package]]
 name = "slotmap"
@@ -1200,9 +1200,9 @@ dependencies = [
 
 [[package]]
 name = "smallvec"
-version = "1.15.1"
+version = "1.15.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
+checksum = "8ed6a63f02c8539c91a8685a86f4099661ba3da017932f6ebbea6de3f0fa7c90"
 
 [[package]]
 name = "stack-buf"
@@ -1727,18 +1727,18 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "zerocopy"
-version = "0.8.48"
+version = "0.8.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eed437bf9d6692032087e337407a86f04cd8d6a16a37199ed57949d415bd68e9"
+checksum = "ce1022995ff5ff5d841ad7d994facc23098cd40152f2c1d11cd607c6f530653f"
 dependencies = [
  "zerocopy-derive",
 ]
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.8.48"
+version = "0.8.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70e3cd084b1788766f53af483dd21f93881ff30d7320490ec3ef7526d203bad4"
+checksum = "1ae7f38b72ec2a254e2b87ef277cf2cd4fb97cbebf944faa6f33354da0867930"
 dependencies = [
  "proc-macro2",
  "quote",
